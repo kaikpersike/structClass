@@ -26,7 +26,7 @@ class Data{
 			this->ano = 0;
 		}
 		
-		// métodos:
+		// mÃ©todos:
 		
 		//setters - > alterar valores dos atributos
 		void setDia(int dia){
@@ -50,7 +50,7 @@ class Data{
 			return this->ano;
 		}
 		
-		//conversão
+		//conversÃ£o
 		string getData() {
 		    string sDia = to_string(this->dia);
 		    string sMes = to_string(this->mes);
@@ -62,12 +62,81 @@ class Data{
         }
 };
 
+class Contato{
+	private:
+		string email;
+		string nome;
+		string telefone;
+		//Data *dtnasc;
+
+	public:
+		
+		Contato(string email, string nome, string telefone/*, Data *dtnasc*/){
+			this->email = email;
+			this->nome = nome;
+			this->telefone = telefone;
+			//this->dtnsac = dtnasc;
+		}
+		
+		Contato(){
+			this->email = '.';
+			this->nome = '.';
+			this->telefone = '.';
+			//this->dtnsac = '.';
+		}
+		
+		void setEmail(string email){
+			this->email = email;
+		}
+		void setNome(string nome){
+			this->nome = nome;
+		}
+		void setTelefone(string telefone){
+			this->telefone = telefone;
+		}
+		/*
+		void setDtnasc(string Data *dtnasc){
+			this->dtnasc = dtnasc;
+		}
+		*/
+		
+		string getEmail(){
+			return this->email;
+		}
+		string getNome(){
+			return this->nome;
+		}
+		string getTelefone(){
+			return this->telefone;
+		}
+		/*
+		Data *getDtnasc(){
+			return this->dtnasc;
+		}
+		*/
+		
+		string getContato() {
+		    string sEmail = this->email;
+		    string sNome = this->nome;
+		    string sTelefone = this->telefone;
+		    // string sDtnasc = to_string(this->dtnasc);
+		    
+		    return "Email: " + sEmail + '\n' + "Nome: " + sNome + '\n' + "Telefone: " + sTelefone;
+        }
+		
+};
+
 int main(int argc, char** argv)
 {
-	
+	/*
 	Data *hoje;
 	hoje = new Data(28, 3, 2024);
 	cout << hoje->getData() << endl;
+	*/
+	
+	Contato *user;
+	user = new Contato("kaik@gmail.com", "Kaik P. M.", "(11)11111-1111");
+	cout << user->getContato();
 
 	return 0;
 }
