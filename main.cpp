@@ -1,5 +1,6 @@
 #include <iostream>
 #include <locale.h>
+#include <typeinfo>
 using namespace std;
 
 class Data{
@@ -49,6 +50,7 @@ class Data{
 		int getAno() {
 			return this->ano;
 		}
+
 		
 		//conversão
 		string getData() {
@@ -67,38 +69,44 @@ class Contato{
 		string email;
 		string nome;
 		string telefone;
-		//Data *dtnasc;
+		Data *dtnasc;
 
 	public:
 		
-		Contato(string email, string nome, string telefone/*, Data *dtnasc*/){
+		Contato(string email, string nome, string telefone, Data *dtnasc){
 			this->email = email;
 			this->nome = nome;
 			this->telefone = telefone;
-			//this->dtnsac = dtnasc;
+			this->dtnasc = dtnasc;
 		}
 		
 		Contato(){
-			this->email = '.';
-			this->nome = '.';
-			this->telefone = '.';
-			//this->dtnsac = '.';
+			this->email = "Not defined";
+			this->nome = "Not defined";
+			this->telefone = "(00)00000-0000";
+			this->dtnasc = new Data();
 		}
 		
 		void setEmail(string email){
-			this->email = email;
+		    if(email != ""){
+		        this->email = email;
+		    }
 		}
 		void setNome(string nome){
-			this->nome = nome;
+			if(nome != ""){
+			    this->nome = nome;
+			}
 		}
 		void setTelefone(string telefone){
-			this->telefone = telefone;
+		    //this->telefone = telefone;
+		    if(telefone != ""){
+		        this->telefone = telefone.insert(0, 1, '(').insert(3, 1, ')').insert(9, 1, '-');
+		    }
 		}
-		/*
-		void setDtnasc(string Data *dtnasc){
+		
+		void setDtnasc(Data *dtnasc){
 			this->dtnasc = dtnasc;
 		}
-		*/
 		
 		string getEmail(){
 			return this->email;
@@ -109,34 +117,94 @@ class Contato{
 		string getTelefone(){
 			return this->telefone;
 		}
-		/*
+		
 		Data *getDtnasc(){
 			return this->dtnasc;
 		}
-		*/
+		
+		int getIdade(){
+		    return this->dtnasc->getAno();
+		}
 		
 		string getContato() {
 		    string sEmail = this->email;
 		    string sNome = this->nome;
 		    string sTelefone = this->telefone;
-		    // string sDtnasc = to_string(this->dtnasc);
+		    string sDtnasc = this->dtnasc->getData();
+		    string sIdade = to_string(2024 - getIdade());
 		    
-		    return "Email: " + sEmail + '\n' + "Nome: " + sNome + '\n' + "Telefone: " + sTelefone;
+		    return "Contato" + string("\n") +
+		           "Email: " + sEmail + '\n' + 
+		           "Nome: " + sNome + '\n' + 
+		           "Telefone: " + sTelefone + '\n' + 
+		           /*"Data de nascimento: " + sDtnasc + '\n' +*/
+		           "Idade: " + sIdade + '\n';
         }
+        
 		
 };
 
+#define qtUser 5
+
+void form(string *formulario){
+    
+    string email;
+	string nome;
+	string telefone;
+	int dia;
+	int mes;
+	int ano;
+	
+	Contato preUser;
+	Contato *user;
+	
+	//string banco[qtUser] = {};
+	
+	for(int i =0; i < qtUser; ++i){
+	    
+	    cout << "Email: "; getline(cin, email);
+    	cout << "Nome: "; getline(cin, nome);
+    	cout << "Telefone: "; getline(cin, telefone);
+
+    	cout << "Data de nascimento (somente numero): " << endl;
+    	cout << "Dia: "; 
+    	cin >> dia;
+    	cout << "Mes: ";
+    	cin >> mes;
+    	cout << "Ano: ";
+    	cin >> ano;
+    	cin.ignore();
+    	cout << endl;
+    	
+	    // usando os métodos setters como filtragem, antes de usar encapsulamento...
+    	preUser.setEmail(email);
+    	preUser.setNome(nome);
+    	preUser.setTelefone(telefone);
+    	preUser.setDtnasc(new Data(dia, mes, ano)); // o encapsulamento foi usado somente no valor da data de nascimento, usando o construtor da classe "Data"
+    	
+    	user = new Contato(preUser.getEmail(), preUser.getNome(), preUser.getTelefone(), preUser.getDtnasc());
+    	
+	    //banco[i] = user->getContato();
+	    formulario[i] = user->getContato();
+	}
+}
+
+
 int main(int argc, char** argv)
 {
-	/*
-	Data *hoje;
-	hoje = new Data(28, 3, 2024);
-	cout << hoje->getData() << endl;
-	*/
-	
-	Contato *user;
-	user = new Contato("kaik@gmail.com", "Kaik P. M.", "(11)11111-1111");
-	cout << user->getContato();
 
+	string *banco;
+	
+	banco = new string[qtUser];
+	
+	form(banco);
+	
+	// exibindo os 5 usuarios
+	for(int i=0; qtUser; ++i){
+	    cout << banco[i] << endl;
+	}
+
+    delete[] banco;
 	return 0;
 }
+
