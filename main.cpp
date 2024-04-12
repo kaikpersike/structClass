@@ -200,7 +200,7 @@ int main(int argc, char** argv)
 	form(banco);
 	
 	// exibindo os 5 usuarios
-	for(int i=0; qtUser; ++i){
+	for(int i=0; i<qtUser; ++i){
 	    cout << banco[i] << endl;
 	}
 
